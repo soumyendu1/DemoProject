@@ -1,0 +1,126 @@
+﻿@model DemoProject.Models.Employees
+@using DemoProject.Models
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card">
+            <div class="card-header create-user-card-header">
+                <h3 id="create-user-card-title" class="card-title" style="font-size: 1.3rem">Create Employee</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            @using (Html.BeginForm("Employee", "Home", FormMethod.Post, new { @id = "create-edit-form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="card-body" style="background-color: #0b0b0b; border: 1px solid white; color: white">
+                    <div class="row">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        @Html.Hidden("mode", "Create")
+                        @Html.Hidden("userName_EditMode", "")
+
+                        @Html.HiddenFor(model => model.EmpId)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.EmpName, new { @class = "required" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.EmpName, new { htmlAttributes = new { @class = "form-control create-user-input", @placeholder = "Enter full name" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.EmpCode, new { @class = "required" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.EmpCode, new { htmlAttributes = new { @class = "form-control create-user-input", @placeholder = "Enter emp code" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Mobile, new { @class = "required" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control create-user-input", @placeholder = "Enter mobile" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer" style="background-color: #0b0b0b; border: 1px solid white;">
+                    <button id="btn-submit" type="submit" class="btn btn-action">Submit</button>
+                    <button id="btn-clear" type="reset" class="btn btn-action">Clear</button>
+                    <button id="create-new" type="button" class="btn btn-action hide-div" style="float:right">Create New</button>
+                </div>
+            }
+        </div>
+        <!-- /.card -->
+        <!-- user table card -->
+        <div class="card">
+            <div class="card-header create-user-card-header">
+                <h3 class="card-title" style="font-size: 1.3rem">All Users</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="background-color: #0b0b0b; border: 1px solid white;">
+                <table class="table table-bordered table-dark table-hover tblUser" id="tblUserCreateUser" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Emp Code</th>
+                            <th>Mobile</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.EmpList != null && ViewBag.EmpList.Count > 0)
+                        {
+                            foreach (Employees data in ViewBag.EmpList)
+                            {
+                                <tr>
+                                    <td>@data.EmpName</td>
+                                    <td>@data.EmpCode</td>
+                                    <td>@data.Mobile</td>
+                                    <td onclick="EditEmp(@data.EmpId)" style="cursor: pointer; text-align: center"><i class="fas fa-edit" style="color:white"></i></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function EditEmp(id) {
+            $.getJSON("/Home/EmpDataEdit?Id="+ id, setEmpData);
+        }
+
+        function setEmpData(data) {
+            var editEmpUrl = '/Home/EditEmp';
+
+            $("#mode").val("Edit");
+            $("#EmpName").val(data[0].EmpName);
+            $("#EmpCode").val(data[0].EmpCode);
+            $("#Mobile").val(data[0].Mobile);
+
+            $("#create-user-card-title").text('Modify Employee');
+            $("#create-edit-form").attr("action", editEmpUrl + "?Id=" + data[0].EmpId);
+
+            $("#btn-submit").text('Update');
+            $("#create-new").removeClass('hide-div');
+        }
+
+        $("#create-new").click(function () {
+            var createEmpUrl = '/Home/Employee';
+            $("#btn-clear").click();
+            $("#create-edit-form").attr("action", createEmpUrl);
+            $("#btn-submit").text('Submit');
+            $("#create-user-card-title").text('Create Employee');
+            $(this).addClass("hide-div");
+        })
+    </script>
+}

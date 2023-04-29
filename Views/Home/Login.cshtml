@@ -1,0 +1,125 @@
+﻿@model DemoProject.Models.Logins
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/BootstrapTheme/login-form-20/css/style.css" rel="stylesheet" />
+    <style>
+        .img-circle {
+            padding-top: 20px;
+        }
+
+        .login-wrap {
+            padding-top: 50px;
+            padding-bottom: 35px;
+        }
+
+        body {
+            font-family: "Lato", Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.8;
+            font-weight: normal;
+            background-color: #81b3e9 !important;
+            position: relative;
+            z-index: 0;
+            padding: 0;
+        }
+
+        body:after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            content: '';
+            background: #81b3e9;
+            opacity: .3;
+            z-index: -1;
+        }
+
+        #termsco:hover {
+            color: #4DED30 !important;
+        }
+
+        .validation-summary-errors ul {
+            list-style: none;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            margin-top: 2rem;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            background-color: #5B7EA4;
+        }
+    </style>
+</head>
+<body class="img js-fullheight">
+    <section class="ftco-section" style="background-color: #81b3e9 !important; min-height: 97.2vh">
+        <div class="container" style="background-color: #81b3e9 !important">
+
+            <div class="row justify-content-center" style="background-color: #81b3e9 !important">
+                <div class="col-md-8 text-center col-lg-8" id="chart-div" style="background-color: rgb(221 213 115) ">
+                    <img src="/Final.png" alt="logo" width="456" height="360" style="margin-top: 4rem;" />
+                </div>
+
+                <div class="col-md-4 text-center col-lg-4" style="background-color: rgb(84, 142, 215)">
+                    <img src="~/dx-login-bg.png" alt="Neotecra Logo" class="brand-image img-circle elevation-3" width="190" height="150" />
+
+                    <div class="login-wrap">
+
+                        @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { id = "loginform" }))
+                        {
+                            <div class="form-group">
+
+                                @Html.TextBoxFor(model => model.Username, new
+                                {
+                                    @class = "form-control",
+                                    @placeholder = "Username",
+                                    @id = "txtName", required = "true"
+})
+                            </div>
+                            <div class="form-group">
+
+                                @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Password", @id = "password-field", required = "true" })
+                                @Html.ValidationMessageFor(model => model.Password)
+
+                                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary submit px-3" style="background-color: #ffffff !important;">Sign In</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/BootstrapTheme/login-form-20/js/popper.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/BootstrapTheme/login-form-20/js/main.js"></script>
+</body>
+</html>
